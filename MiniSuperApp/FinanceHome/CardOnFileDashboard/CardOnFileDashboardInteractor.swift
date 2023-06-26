@@ -20,10 +20,11 @@ protocol CardOnFileDashboardPresentable: Presentable {
 
 protocol CardOnFileDashboardListener: AnyObject {
     // TODO: Declare methods the interactor can invoke to communicate with other RIBs.
+    func cardsOnFileDashboardDidTapAddPaymentMethod()
 }
 
 protocol CardOnFileDashboardInteractorDependency {
-    var cardOnFileRepository: CardOnFileRepository { get }
+    var cardsOnFileRepository: CardOnFileRepository { get }
 }
 
 final class CardOnFileDashboardInteractor: PresentableInteractor<CardOnFileDashboardPresentable>, CardOnFileDashboardInteractable, CardOnFileDashboardPresentableListener {
@@ -47,7 +48,7 @@ final class CardOnFileDashboardInteractor: PresentableInteractor<CardOnFileDashb
     override func didBecomeActive() {
         super.didBecomeActive()
         
-        dependency.cardOnFileRepository.cardOnFile.sink { [weak self] methods in
+        dependency.cardsOnFileRepository.cardOnFile.sink { [weak self] methods in
             let viewModels = methods.prefix(5).map { PaymentMethodViewModel($0) }
             self?.presenter.update(viewModels)
         }
@@ -59,5 +60,9 @@ final class CardOnFileDashboardInteractor: PresentableInteractor<CardOnFileDashb
         
         cancellable.forEach { $0.cancel() }
         cancellable.removeAll()
+    }
+    
+    func didTapAddPaymentMethod() {
+        listener?.cardsOnFileDashboardDidTapAddPaymentMethod()
     }
 }

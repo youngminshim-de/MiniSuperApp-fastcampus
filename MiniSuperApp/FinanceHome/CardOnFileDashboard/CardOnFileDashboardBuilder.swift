@@ -8,11 +8,11 @@
 import ModernRIBs
 
 protocol CardOnFileDashboardDependency: Dependency {
-    var cardOnFileRepository: CardOnFileRepository { get }
+    var cardsOnFileRepository: CardOnFileRepository { get }
 }
 
 final class CardOnFileDashboardComponent: Component<CardOnFileDashboardDependency>, CardOnFileDashboardInteractorDependency {
-    var cardOnFileRepository: CardOnFileRepository { dependency.cardOnFileRepository }
+    var cardsOnFileRepository: CardOnFileRepository { dependency.cardsOnFileRepository }
 }
 
 // MARK: - Builder
