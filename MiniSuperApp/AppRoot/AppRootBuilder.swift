@@ -1,14 +1,13 @@
 import ModernRIBs
+import ProfileHome
+import AppHome
+import FinanceHome
+import FinanceRepository
 import UIKit
 
 protocol AppRootDependency: Dependency {
   // TODO: Declare the set of dependencies required by this RIB, but cannot be
   // created by this RIB.
-}
-
-final class AppRootComponent: Component<AppRootDependency>, AppHomeDependency, FinanceHomeDependency, ProfileHomeDependency  {
-  
-  // TODO: Declare 'fileprivate' dependencies that are only used by this RIB.
 }
 
 // MARK: - Builder
@@ -24,9 +23,13 @@ final class AppRootBuilder: Builder<AppRootDependency>, AppRootBuildable {
   }
   
   func build() -> (launchRouter: LaunchRouting, urlHandler: URLHandler) {
-    let component = AppRootComponent(dependency: dependency)
-    
     let tabBar = RootTabBarController()
+      
+    let component = AppRootComponent(
+        dependency: dependency,
+        cardsOnFileRepository: CardonFileRepositoryImp(),
+        superPayRepository: SuperPayRepositoryImp(),
+        rootViewController: tabBar)
     
     let interactor = AppRootInteractor(presenter: tabBar)
     
